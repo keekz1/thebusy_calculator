@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .calculator {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+        .display {
+            width: 100%;
+            padding: 15px;
+            font-size: 2.5em;
+            text-align: right;
+            border: none;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .button {
+            padding: 20px;
+            font-size: 1.5em;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .button:hover {
+            background: #d1d1d1;
+            transform: scale(1.05);
+        }
+        .button.operator {
+            background: #ff9500;
+            color: #fff;
+        }
+        .button.operator:hover {
+            background: #e08d00;
+        }
+        .button.equal {
+            background: #34c759;
+            color: #fff;
+            grid-column: span 2;
+        }
+        .button.equal:hover {
+            background: #30b057;
+        }
+        .button.zero {
+            grid-column: span 2;
+        }
+        .button.memory {
+            background: #007aff;
+            color: #fff;
+        }
+        .button.memory:hover {
+            background: #006ae6;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="display" id="display" readonly>
+        <div class="buttons">
+            <button class="button memory" onclick="memoryClear()">MC</button>
+            <button class="button memory" onclick="memoryRecall()">MR</button>
+            <button class="button memory" onclick="memoryAdd()">M+</button>
+            <button class="button memory" onclick="memorySubtract()">M-</button>
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button operator" onclick="chooseOperator('/')">/</button>
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button operator" onclick="chooseOperator('*')">*</button>
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button operator" onclick="chooseOperator('-')">-</button>
+            <button class="button zero" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendDot()">.</button>
+            <button class="button operator" onclick="chooseOperator('+')">+</button>
+            <button class="button equal" onclick="calculate()">=</button>
+            <button class="button operator" onclick="calculatePercentage()">%</button>
+            <button class="button operator" onclick="calculateSquareRoot()">√</button>
+            <button class="button" onclick="clearDisplay()">C</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let currentOperand = '';
+        let previousOperand = '';
+        let operation = null;
+        let memory = 0;
+
+        function appendNumber(number) {
+            if (number === '0' && currentOperand === '0') return;
+            currentOperand = currentOperand.toString() + number.toString();
+            updateDisplay();
+        }
+
+        function appendDot() {
+            if (currentOperand.includes('.')) return;
+            currentOperand += '.';
+            updateDisplay();
+        }
+
+        function chooseOperator(operator) {
+            if (currentOperand === '') return;
+            if (previousOperand !== '') {
+                calculate();
+            }
+            operation = operator;
+            previousOperand = currentOperand;
+            currentOperand = '';
+        }
+
+        function calculate() {
+            let result;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (operation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            currentOperand = result;
+            operation = null;
+            previousOperand = '';
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentOperand = '';
+            previousOperand = '';
+            operation = null;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.value = currentOperand;
+        }
+
+        function calculatePercentage() {
+            if (currentOperand === '') return;
+            currentOperand = parseFloat(currentOperand) / 100;
+            updateDisplay();
+        }
+
+        function calculateSquareRoot() {
+            if (currentOperand === '') return;
+            currentOperand = Math.sqrt(parseFloat(currentOperand));
+            updateDisplay();
+        }
+
+        function memoryClear() {
+            memory = 0;
+        }
+
+        function memoryRecall() {
+            currentOperand = memory.toString();
+            updateDisplay();
+        }
+
+        function memoryAdd() {
+            memory += parseFloat(currentOperand);
+            currentOperand = '';
+            updateDisplay();
+        }
+
+        function memorySubtract() {
+            memory -= parseFloat(currentOperand);
+            currentOperand = '';
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
