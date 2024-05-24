@@ -1,0 +1,81 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.calculator {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+.display {
+    width: 100%;
+    padding: 15px;
+    font-size: 2.5em;
+    text-align: right;
+    border: none;
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.button {
+    padding: 20px;
+    font-size: 1.5em;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.button:hover {
+    background: #d1d1d1;
+    transform: scale(1.05);
+}
+
+.button.operator {
+    background: #ff9500;
+    color: #fff;
+}
+
+.button.operator:hover {
+    background: #e08d00;
+}
+
+.button.equal {
+    background: #34c759;
+    color: #fff;
+    grid-column: span 2;
+}
+
+.button.equal:hover {
+    background: #30b057;
+}
+
+.button.zero {
+    grid-column: span 2;
+}
+
+.button.memory {
+    background: #007aff;
+    color: #fff;
+}
+
+.button.memory:hover {
+    background: #006ae6;
+}
